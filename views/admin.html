@@ -1,0 +1,20 @@
+<h1>Upload New Movie</h1>
+<form action="/upload" method="POST">
+    <input type="text" name="name" placeholder="Movie Name" required><br><br>
+    <input type="text" name="link" placeholder="Movie Link" required><br><br>
+    <input type="text" name="thumbnail" placeholder="Thumbnail Link" required><br><br>
+    <textarea name="description" placeholder="Movie Description" required></textarea><br><br>
+    <select name="category" required>
+        <option>Action</option>
+        <option>Comedy</option>
+        <option>Drama</option>
+        <option>Horror</option>
+        <option>Romance</option>
+        <option>Thriller</option>
+        <option>Adventure</option>
+        <option>Fantasy</option>
+        <option>Animation</option>
+        <option>Documentary</option>
+    </select><br><br>
+    <button type="submit">Upload Movie</button>
+</form>

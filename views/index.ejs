@@ -1,0 +1,677 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>agasobanuye.pro</title>
+    <meta name="description" content="ikaze mwisi yagasobanuye aho urabona firime soze kubuntu ntana ma ads ureba.">
+    <meta name="keywords" content="ngwino urebe agasobanuye kubuntu kuri agasobanuye.pro">
+    <meta name="author" content="agasobanuye.pro">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://agasobanuye.pro" />
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+    /* Dark Mode Styles (Default) */
+    body {
+    background-color: #0d1117;
+    color: #e6edf3;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+    padding: 0;
+    line-height: 1.6;
+    font-size: 16px;
+}
+
+/* Hero Section */
+.hero-section {
+    position: relative;
+    min-height: 400px;
+    background: linear-gradient(to right, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.7)), url('<%= latestMovie.thumbnail %>');
+    background-size: cover;
+    background-position: center;
+    color: black;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    padding: 40px 15px;
+    box-sizing: border-box;
+}
+
+.hero-title {
+    font-size: clamp(2rem, 6vw, 4rem);
+    font-weight: bold;
+    text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.5);
+    color: #58a6ff;
+    margin: 0 0 20px;
+}
+
+/* Container styling */
+.container {
+    width: 100%;
+    max-width: 1200px;
+    margin: auto;
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+/* Headings */
+h2 {
+    color: #58a6ff;
+    margin-bottom: 15px;
+    font-size: clamp(1.25rem, 4vw, 2rem);
+    font-weight: bold;
+}
+
+/* Links */
+a {
+    color: #58a6ff;
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+/* Movie scroll section */
+.movie-scroll {
+    display: flex;
+    overflow-x: auto;
+    gap: 16px;
+    padding: 10px 0;
+    list-style: none;
+    -webkit-overflow-scrolling: touch;
+    scroll-snap-type: x mandatory;
+}
+
+.movie-card {
+    flex: 0 0 auto;
+    width: 160px;
+    background-color: #161b22;
+    border: 1px solid #30363d;
+    border-radius: 10px;
+    padding: 10px;
+    text-align: center;
+    color: #e6edf3;
+    transition: transform 0.2s ease, box-shadow 0.3s ease;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.4);
+    cursor: pointer;
+    position: relative;
+    scroll-snap-align: start;
+}
+
+.movie-card:hover {
+    transform: scale(1.05);
+    box-shadow: 0 4px 20px rgba(0, 255, 255, 0.2);
+}
+
+.movie-card img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+    border-radius: 8px;
+}
+
+/* Play Button */
+.play-btn {
+    position: absolute;
+    bottom: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #238636;
+    color: #ffffff;
+    padding: 8px 16px;
+    border-radius: 30px;
+    font-size: 14px;
+    font-weight: bold;
+    cursor: pointer;
+    opacity: 0;
+    transition: opacity 0.3s ease, transform 0.2s ease;
+    border: none;
+}
+
+.movie-card:hover .play-btn {
+    opacity: 1;
+}
+
+.play-btn:hover {
+    background-color: #2ea043;
+    transform: translateX(-50%) scale(1.1);
+}
+
+/* Search Bar */
+.search-bar-container {
+    position: absolute;
+    bottom: 20px;
+    width: 100%;
+    padding: 0 15px;
+    display: flex;
+    justify-content: center;
+    box-sizing: border-box;
+}
+
+.search-bar-container .input-group {
+    display: flex;
+    max-width: 100%;
+    width: 100%;
+    gap: 8px;
+}
+
+.search-bar-container input {
+    flex: 1;
+    padding: 10px;
+    border-radius: 25px;
+    border: 1px solid #30363d;
+    color: #e6edf3;
+    background-color: #1f2428;
+}
+
+.search-bar-container button {
+    border: none;
+    background-color: #238636;
+    color: #fff;
+    border-radius: 50%;
+    padding: 10px;
+    cursor: pointer;
+}
+
+.search-bar-container button:hover {
+    background-color: #2ea043;
+}
+
+/* Category Menu */
+.category-menu {
+    display: none;
+    position: absolute;
+    top: 50px;
+    left: 10px;
+    background-color: #161b22;
+    border-radius: 5px;
+    padding: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.category-menu a {
+    color: #58a6ff;
+    padding: 10px 15px;
+    display: block;
+}
+
+.category-menu a:hover {
+    background-color: #30363d;
+}
+
+#categoryMenu.show {
+    display: flex;
+}
+
+.menu-icon {
+    position: absolute;
+    top: 15px;
+    left: 15px;
+    cursor: pointer;
+}
+
+.menu-icon div {
+    width: 25px;
+    height: 3px;
+    background-color: #fff;
+    margin: 5px 0;
+}
+
+/* User Profile */
+.user-profile {
+    position: absolute;
+    top: 15px;
+    right: 20px;
+    color: #e6edf3;
+    display: flex;
+    align-items: center;
+}
+
+.user-profile img {
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    margin-right: 10px;
+}
+
+.user-profile span {
+    font-weight: bold;
+}
+
+/* WhatsApp Icon */
+.whatsapp-icon {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 1000;
+}
+
+.whatsapp-icon img {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.whatsapp-icon:hover img {
+    transform: scale(1.1);
+    box-shadow: 0 0 15px rgba(0, 255, 0, 0.5);
+}
+
+/* Footer */
+footer {
+    background-color: #121212;
+    padding: 20px;
+    text-align: center;
+    color: #e6edf3;
+    margin-top: 50px;
+    border-top: 2px solid #30363d;
+}
+
+footer a {
+    color: #58a6ff;
+}
+
+footer a:hover {
+    text-decoration: underline;
+}
+
+/* Social Icons */
+.social-links {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+.social-links img {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.social-links img:hover {
+    transform: scale(1.1);
+    box-shadow: 0 0 15px rgba(255, 255, 255, 0.3);
+}
+
+/* Responsive Tweaks */
+@media (min-width: 768px) {
+    .movie-card {
+        width: 180px;
+        height: auto;
+    }
+
+    .hero-section {
+        min-height: 600px;
+    }
+
+    .search-bar-container .input-group {
+        max-width: 500px;
+    }
+}
+
+    
+    </style>
+</head>
+
+<body>
+  
+    <div class="container">
+        <!-- Hero Section with Latest Movie -->
+        <div class="hero-section">
+            <!-- Menu Icon -->
+            <!-- Menu Icon -->
+            <div class="menu-icon" onclick="toggleMenu()">
+                <img src="https://i.postimg.cc/g2krx5LN/487506104-632445376273608-2035865230541510449-n.jpg" alt="Menu Icon" style="width: 30px; height: auto; margin-bottom: 10px;">
+            
+                <div class="line"></div>
+                <div class="line"></div>
+                <div class="line"></div>
+            </div>
+            
+
+            <!-- Category Menu -->
+            <div id="categoryMenu" class="category-menu">
+                <a href="#action-movies">Action</a>
+                <a href="#comedy-movies">Comedy</a>
+                <a href="#drama-movies">Drama</a>
+                <a href="#horror-movies">Horror</a>
+            </div>
+
+            <!-- User Profile -->
+            <div class="user-profile">
+                <img src="https://i.postimg.cc/g2krx5LN/487506104-632445376273608-2035865230541510449-n.jpg" alt="User Profile">
+                <span>Premium Client</span>
+            </div>
+
+            <h1 class="hero-title"><%= latestMovie.name %></h1>
+            <p class="hero-description"><%= latestMovie.description %></p>
+            <a href="/movie/<%= latestMovie.id %>" class="btn btn-primary btn-lg">
+              <img src="https://img.icons8.com/?size=100&id=Y3f8CzoqEBag&format=png&color=000000" alt="Watch" style="width: 24px; height: 24px;">
+            </a>
+            
+
+            <!-- Search Bar inside Hero Section -->
+            <div class="search-bar-container">
+                <form method="GET" action="/">
+                    <div class="input-group">
+                        <input type="text" name="search" class="form-control" placeholder="🔍" value="<%= searchQuery %>">
+                        <button type="submit" class="btn btn-primary">
+                          <img src="https://img.icons8.com/?size=100&id=123400&format=png&color=000000" alt="Search" style="width: 24px; height: 24px;">
+                        </button>
+                        
+                    </div>
+                </form>
+            </div>
+        </div>
+        <% if (searchQuery && searchResults.length > 0) { %>
+          <h2 class="my-4">Search Results</h2>
+          <div class="category-container">
+              <% searchResults.forEach(function(movie) { %>
+                  <div class="category-card">
+                      <img src="<%= movie.thumbnail %>" alt="<%= movie.name %>">
+                      <div class="category-title"><%= movie.name %></div>
+                      <div class="category-description"><%= movie.description.split(" ").slice(0, 2).join(" ") %>...</div>
+                      <a href="/movie/<%= movie.id %>">View Details</a>
+                  </div>
+              <% }); %>
+          </div>
+      <% } %>
+
+        <% categoryData.forEach((data) => { %>
+          <h2><a href="/category/<%= data.category %>"><%= data.category %></a></h2>
+          
+          <ul class="movie-scroll">
+            <% data.movies.forEach((movie) => { %>
+              <li class="movie-card">
+                <img src="<%= movie.thumbnail %>" alt="<%= movie.name %>" width="100%" height="240">
+                <br>
+                <a href="/movie/<%= movie.id %>"><%= movie.name %></a>
+                
+                <!-- Play Button -->
+                <a href="/movie/<%= movie.id %>" class="play-btn">Play</a>
+              </li>
+            <% }); %>
+          </ul>
+          <a href="/category/<%= data.category %>" class="view-more">View More</a>
+
+<style>
+.view-more {
+  display: inline-block;
+  padding: 10px 20px;
+  color: #1e88e5;
+  border: 2px solid #1e88e5;
+  text-decoration: none;
+  border-radius: 8px;
+  font-weight: 500;
+  transition: all 0.3s ease;
+}
+
+.view-more:hover {
+  background-color: #1e88e5;
+  color: #fff;
+}
+</style>
+
+        <% }); %>
+        
+        
+        
+              
+    </div>
+
+    <!-- WhatsApp Floating Icon -->
+    <div class="whatsapp-icon">
+        <a href="https://wa.me/250791820286" target="_blank">
+            <img src="https://img.icons8.com/color/96/000000/whatsapp.png" alt="Chat with us on WhatsApp">
+        </a>
+    </div>
+    
+    </div>
+    <footer>
+        <div class="social-links">
+            <div style="
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #121212; /* Dark background */
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+        ">
+          <a href="mailto:thierryviran50@gmail.com" target="_blank" style="text-decoration: none;">
+            <img 
+              src="https://upload.wikimedia.org/wikipedia/commons/4/4e/Gmail_Icon.png" 
+              alt="Chat with us email"
+              style="
+                width: 50px;
+                height: 50px;
+                transition: transform 0.3s ease, box-shadow 0.3s ease;
+                border-radius: 50%;
+                background-color: white;
+                padding: 8px;
+            ">
+          </a>
+        </div>
+        
+              
+        <div style="
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background-color: #121212; /* Dark background */
+        padding: 20px;
+        border-radius: 12px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+        margin-top: 20px; /* small gap if you add below the Gmail one */
+    ">
+      <a href="https://www.instagram.com/threy_____villa/" target="_blank" title="Instagram" style="text-decoration: none;">
+        <img 
+          src="https://upload.wikimedia.org/wikipedia/commons/a/a5/Instagram_icon.png" 
+          alt="Visit our Instagram"
+          style="
+            width: 50px;
+            height: 50px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            border-radius: 12px;
+            background-color: white;
+            padding: 8px;
+        "
+          onmouseover="this.style.transform='scale(1.2)'; this.style.boxShadow='0 8px 16px rgba(255,255,255,0.3)';"
+          onmouseout="this.style.transform='scale(1)'; this.style.boxShadow='0 4px 12px rgba(0,0,0,0.5)';"
+        >
+      </a>
+    
+      <!-- Add name -->
+      <span style="color: white; font-size: 20px; margin-left: 10px;">threy_villa</span>
+    
+      <!-- Add new icon after name -->
+      <img 
+        src="https://img.icons8.com/?size=100&id=pIPl8tqh3igN&format=png&color=000000" 
+        alt="Icon after name"
+        style="
+          width: 30px;
+          height: 30px;
+          margin-left: 10px;
+          object-fit: contain;
+        "
+      >
+    </div>
+    
+    
+    <div style="
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #121212; /* Dark background */
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+    margin-top: 20px; /* small gap if you add below others */
+">
+  <a href="https://www.youtube.com/threyviran" target="_blank" title="YouTube" style="text-decoration: none;">
+    <img 
+      src="https://upload.wikimedia.org/wikipedia/commons/0/09/YouTube_full-color_icon_(2017).svg" 
+      alt="Visit our YouTube"
+      style="
+        width: 50px;
+        height: 50px;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        border-radius: 12px;
+        background-color: white;
+        padding: 8px;
+    "
+      onmouseover="this.style.transform='scale(1.2)'; this.style.boxShadow='0 8px 16px rgba(255,255,255,0.3)';"
+      onmouseout="this.style.transform='scale(1)'; this.style.boxShadow='0 4px 12px rgba(0,0,0,0.5)';"
+    >
+  </a>
+</div>
+
+
+<div style="
+display: flex;
+justify-content: center;
+align-items: center;
+background-color: #121212; /* Dark background */
+padding: 20px;
+border-radius: 12px;
+box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+margin-top: 20px; /* small gap if you add below others */
+">
+<a href="tel:+250791820286" title="Phone" style="text-decoration: none;">
+<img 
+  src="https://imgs.search.brave.com/qpzmOV-AlMIu71QjBr3qykp2BOma53FWNqrPZNaV7V4/rs:fit:500:0:0:0/g:ce/aHR0cHM6Ly9pbWdz/LnNlYXJjaC5icmF2/ZS5jb20vWVhqSFZM/Ymd4LU8tZnh0bXFf/X0xGQWN6ZU5tMDFh/bG85REZFWGd6SFBM/Yy9yczpmaXQ6NTYw/OjMyMDoxOjAvZzpj/ZS9hSFIwY0hNNkx5/OXpkR0YwL2FXTXRN/REF1YVdOdmJtUjEv/WTJzdVkyOXRMMkZ6/YzJWMC9jeTR3TUM5/d2FHOXVaUzFwL1ky/OXVMVFV4TW5nMU1U/SXQvYzNKaGVYa3lO/amN1Y0c1bg.jpeg" 
+  alt="Call us"
+  style="
+    width: 50px;
+    height: 50px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    border-radius: 12px;
+    background-color: white;
+    padding: 8px;
+    object-fit: contain;
+"
+  onmouseover="this.style.transform='scale(1.2)'; this.style.boxShadow='0 8px 16px rgba(255,255,255,0.3)';"
+  onmouseout="this.style.transform='scale(1)'; this.style.boxShadow='0 4px 12px rgba(0,0,0,0.5)';"
+>
+</a>
+</div>
+<div style="
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #121212; /* Dark background */
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+    margin-top: 20px; /* small gap if you add below others */
+">
+  <a href="https://www.tiktok.com/@threyviran" target="_blank" title="TikTok" style="text-decoration: none;">
+    <img 
+      src="https://t4.ftcdn.net/jpg/09/59/37/13/360_F_959371313_RRI74ggMacb1vjpXt5XyoVcD9ZnDOQQG.jpg" 
+      alt="Visit our TikTok"
+      style="
+        width: 50px;
+        height: 50px;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        border-radius: 12px;
+        background-color: white;
+        padding: 8px;
+        object-fit: contain;
+    "
+      onmouseover="this.style.transform='scale(1.2)'; this.style.boxShadow='0 8px 16px rgba(255,255,255,0.3)';"
+      onmouseout="this.style.transform='scale(1)'; this.style.boxShadow='0 4px 12px rgba(0,0,0,0.5)';"
+    >
+  </a>
+
+  <!-- Add name -->
+  <span style="color: white; font-size: 20px; margin-left: 10px;">Threyviran</span>
+
+  <!-- Add new icon after name -->
+  <img 
+    src="https://img.icons8.com/?size=100&id=pIPl8tqh3igN&format=png&color=000000" 
+    alt="Icon after name"
+    style="
+      width: 30px;
+      height: 30px;
+      margin-left: 10px;
+      object-fit: contain;
+    "
+  >
+</div>
+<div style="
+display: flex;
+justify-content: center;
+align-items: center;
+background-color: #121212; /* Dark background */
+padding: 20px;
+border-radius: 12px;
+box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+margin-top: 20px; /* small gap if you add below others */
+">
+<a href="tel:+250791820286" title="Phone" style="text-decoration: none;">
+<img 
+  src="https://i.postimg.cc/g2krx5LN/487506104-632445376273608-2035865230541510449-n.jpg" 
+  alt="Call us"
+  style="
+    width: 50px;
+    height: 50px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    border-radius: 12px;
+    background-color: white;
+    padding: 8px;
+    object-fit: contain;
+"
+  onmouseover="this.style.transform='scale(1.2)'; this.style.boxShadow='0 8px 16px rgba(255,255,255,0.3)';"
+  onmouseout="this.style.transform='scale(1)'; this.style.boxShadow='0 4px 12px rgba(0,0,0,0.5)';"
+>
+</a>
+
+<!-- Add name -->
+<span style="color: white; font-size: 20px; margin-left: 10px;">agasobanuye.pro</span>
+
+<!-- Add new icon after name -->
+<img 
+  src="https://img.icons8.com/?size=100&id=pIPl8tqh3igN&format=png&color=000000" 
+  alt="Icon after name"
+  style="
+    width: 30px;
+    height: 30px;
+    margin-left: 10px;
+    object-fit: contain;
+  "
+>
+</div>
+
+
+        </div>
+    
+        
+    
+        <div class="bottom-footer">
+          <p>Copyright © 2025 Agasobanuye Pro. All Rights Reserved.</p>
+          <p>
+            <a href="#">Privacy Policy</a> | <a href="#">Terms & Conditions</a>
+          </p>
+        </div>
+      </footer>
+    <script>
+        function toggleMenu() {
+            const menu = document.getElementById('categoryMenu');
+            if (menu.style.display === 'block') {
+                menu.style.display = 'none';
+            } else {
+                menu.style.display = 'block';
+            }
+        }
+    </script>
+    
+</body>
+</html>

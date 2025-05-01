@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title><%= movie.name %> - Movie Details</title>
+  <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+
+  <style>
+    /* Dark Mode Styles */
+    body, html {
+      margin: 0;
+      padding: 0;
+      background-color: #0d1117;
+      font-family: 'Poppins', Arial, sans-serif;
+      color: #c9d1d9;
+    }
+
+    .container {
+      background-color: #161b22;
+      padding: 40px 30px;
+      border-radius: 15px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+      margin-top: 40px;
+      margin-bottom: 40px;
+      max-width: 800px;
+    }
+
+    h1, h3, h4 {
+      font-weight: 700;
+      color: #58a6ff;
+    }
+
+    img.img-fluid {
+      border-radius: 12px;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.7);
+      transition: transform 0.3s ease;
+    }
+
+    img.img-fluid:hover {
+      transform: scale(1.02);
+    }
+
+    a.btn-secondary {
+      background-color: #30363d;
+      border-color: #30363d;
+      font-weight: 600;
+      transition: background-color 0.3s ease;
+      color: #c9d1d9;
+    }
+
+    a.btn-secondary:hover {
+      background-color: #484f58;
+      border-color: #484f58;
+      color: #ffffff;
+    }
+
+    a.btn-success {
+      background-color: #238636;
+      border-color: #2ea043;
+      font-weight: 600;
+      margin-top: 10px;
+      transition: background-color 0.3s ease;
+      color: #ffffff;
+    }
+
+    a.btn-success:hover {
+      background-color: #2ea043;
+      border-color: #2ea043;
+    }
+
+    .border {
+      border: 1px solid #30363d;
+    }
+
+    .rounded {
+      border-radius: 10px;
+    }
+
+    .p-3 {
+      background-color: #21262d;
+    }
+
+    form input.form-control, form textarea.form-control {
+      background-color: #0d1117;
+      border: 1px solid #30363d;
+      color: #c9d1d9;
+      border-radius: 8px;
+      transition: border-color 0.3s, box-shadow 0.3s;
+    }
+
+    form input.form-control:focus, form textarea.form-control:focus {
+      border-color: #58a6ff;
+      box-shadow: 0 0 5px rgba(88, 166, 255, 0.5);
+      background-color: #161b22;
+    }
+
+    button.btn-primary {
+      background-color: #1f6feb;
+      border-color: #1f6feb;
+      font-weight: 600;
+      width: 100%;
+      transition: background-color 0.3s ease;
+      margin-top: 10px;
+      padding: 12px;
+      color: #ffffff;
+    }
+
+    button.btn-primary:hover {
+      background-color: #388bfd;
+      border-color: #388bfd;
+    }
+
+    p {
+      font-size: 1.05rem;
+    }
+
+    .mb-4 p strong {
+      color: #79c0ff;
+    }
+
+    /* Comments Section */
+    .border.rounded.p-3.mb-3 {
+      background-color: #161b22;
+      border: 1px solid #30363d;
+      box-shadow: 0 3px 8px rgba(0,0,0,0.5);
+    }
+
+    /* Responsive Adjustments */
+    @media (max-width: 768px) {
+      .container {
+        padding: 20px 15px;
+      }
+    }
+  </style>
+
+</head>
+<body>
+
+  <div class="container my-5">
+    <a href="/" class="btn btn-secondary mb-4">← Back to Home</a>
+
+    <h1 class="mb-4"><%= movie.name %></h1>
+    <img src="<%= movie.thumbnail %>" class="img-fluid rounded mb-4" alt="<%= movie.name %>">
+
+    <div class="mb-4">
+      <p><strong>Description:</strong> <%= movie.description %></p>
+      <p><strong>Category:</strong> <%= movie.category %></p>
+      <a href="<%= movie.link %>" class="btn btn-success" target="_blank">🎬 Watch Now</a>
+    </div>
+
+    <!-- Comments Section -->
+    <h3 class="mt-5">Comments</h3>
+
+    <% if (typeof comments !== 'undefined' && comments.length > 0) { %>
+      <% comments.forEach(function(comment) { %>
+        <div class="border rounded p-3 mb-3">
+          <p><strong><%= comment.username %>:</strong> <%= comment.comment %></p>
+        </div>
+      <% }); %>
+    <% } else { %>
+      <p>No comments yet. Be the first to comment!</p>
+    <% } %>
+
+    <!-- Add Comment Form -->
+    <h4 class="mt-4">Add Your Comment</h4>
+    <form method="POST" action="/movie/<%= movie.id %>/comment">
+      <div class="form-group">
+        <input type="text" name="username" placeholder="Your Name" class="form-control" required>
+      </div>
+      <div class="form-group">
+        <textarea name="comment" placeholder="Your Comment" class="form-control" rows="4" required></textarea>
+      </div>
+      <button type="submit" class="btn btn-primary">Post Comment</button>
+    </form>
+
+  </div>
+  <footer>
+    <div class="social-links">
+        <div style="
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background-color: #121212; /* Dark background */
+        padding: 20px;
+        border-radius: 12px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+    ">
+      <a href="mailto:thierryviran50@gmail.com" target="_blank" style="text-decoration: none;">
+        <img 
+          src="https://upload.wikimedia.org/wikipedia/commons/4/4e/Gmail_Icon.png" 
+          alt="Chat with us email"
+          style="
+            width: 50px;
+            height: 50px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            border-radius: 50%;
+            background-color: white;
+            padding: 8px;
+        ">
+      </a>
+    </div>
+    
+          
+    <div style="
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #121212; /* Dark background */
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+    margin-top: 20px; /* small gap if you add below the Gmail one */
+">
+  <a href="https://www.instagram.com/threy_____villa/" target="_blank" title="Instagram" style="text-decoration: none;">
+    <img 
+      src="https://upload.wikimedia.org/wikipedia/commons/a/a5/Instagram_icon.png" 
+      alt="Visit our Instagram"
+      style="
+        width: 50px;
+        height: 50px;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        border-radius: 12px;
+        background-color: white;
+        padding: 8px;
+    "
+      onmouseover="this.style.transform='scale(1.2)'; this.style.boxShadow='0 8px 16px rgba(255,255,255,0.3)';"
+      onmouseout="this.style.transform='scale(1)'; this.style.boxShadow='0 4px 12px rgba(0,0,0,0.5)';"
+    >
+  </a>
+
+  <!-- Add name -->
+  <span style="color: white; font-size: 20px; margin-left: 10px;">threy_villa</span>
+
+  <!-- Add new icon after name -->
+  <img 
+    src="https://img.icons8.com/?size=100&id=pIPl8tqh3igN&format=png&color=000000" 
+    alt="Icon after name"
+    style="
+      width: 30px;
+      height: 30px;
+      margin-left: 10px;
+      object-fit: contain;
+    "
+  >
+</div>
+
+
+<div style="
+display: flex;
+justify-content: center;
+align-items: center;
+background-color: #121212; /* Dark background */
+padding: 20px;
+border-radius: 12px;
+box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+margin-top: 20px; /* small gap if you add below others */
+">
+<a href="https://www.youtube.com/threyviran" target="_blank" title="YouTube" style="text-decoration: none;">
+<img 
+  src="https://upload.wikimedia.org/wikipedia/commons/0/09/YouTube_full-color_icon_(2017).svg" 
+  alt="Visit our YouTube"
+  style="
+    width: 50px;
+    height: 50px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    border-radius: 12px;
+    background-color: white;
+    padding: 8px;
+"
+  onmouseover="this.style.transform='scale(1.2)'; this.style.boxShadow='0 8px 16px rgba(255,255,255,0.3)';"
+  onmouseout="this.style.transform='scale(1)'; this.style.boxShadow='0 4px 12px rgba(0,0,0,0.5)';"
+>
+</a>
+</div>
+
+
+<div style="
+display: flex;
+justify-content: center;
+align-items: center;
+background-color: #121212; /* Dark background */
+padding: 20px;
+border-radius: 12px;
+box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+margin-top: 20px; /* small gap if you add below others */
+">
+<a href="tel:+250791820286" title="Phone" style="text-decoration: none;">
+<img 
+src="https://imgs.search.brave.com/qpzmOV-AlMIu71QjBr3qykp2BOma53FWNqrPZNaV7V4/rs:fit:500:0:0:0/g:ce/aHR0cHM6Ly9pbWdz/LnNlYXJjaC5icmF2/ZS5jb20vWVhqSFZM/Ymd4LU8tZnh0bXFf/X0xGQWN6ZU5tMDFh/bG85REZFWGd6SFBM/Yy9yczpmaXQ6NTYw/OjMyMDoxOjAvZzpj/ZS9hSFIwY0hNNkx5/OXpkR0YwL2FXTXRN/REF1YVdOdmJtUjEv/WTJzdVkyOXRMMkZ6/YzJWMC9jeTR3TUM5/d2FHOXVaUzFwL1ky/OXVMVFV4TW5nMU1U/SXQvYzNKaGVYa3lO/amN1Y0c1bg.jpeg" 
+alt="Call us"
+style="
+width: 50px;
+height: 50px;
+transition: transform 0.3s ease, box-shadow 0.3s ease;
+border-radius: 12px;
+background-color: white;
+padding: 8px;
+object-fit: contain;
+"
+onmouseover="this.style.transform='scale(1.2)'; this.style.boxShadow='0 8px 16px rgba(255,255,255,0.3)';"
+onmouseout="this.style.transform='scale(1)'; this.style.boxShadow='0 4px 12px rgba(0,0,0,0.5)';"
+>
+</a>
+</div>
+<div style="
+display: flex;
+justify-content: center;
+align-items: center;
+background-color: #121212; /* Dark background */
+padding: 20px;
+border-radius: 12px;
+box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+margin-top: 20px; /* small gap if you add below others */
+">
+<a href="https://www.tiktok.com/@threyviran" target="_blank" title="TikTok" style="text-decoration: none;">
+<img 
+  src="https://t4.ftcdn.net/jpg/09/59/37/13/360_F_959371313_RRI74ggMacb1vjpXt5XyoVcD9ZnDOQQG.jpg" 
+  alt="Visit our TikTok"
+  style="
+    width: 50px;
+    height: 50px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    border-radius: 12px;
+    background-color: white;
+    padding: 8px;
+    object-fit: contain;
+"
+  onmouseover="this.style.transform='scale(1.2)'; this.style.boxShadow='0 8px 16px rgba(255,255,255,0.3)';"
+  onmouseout="this.style.transform='scale(1)'; this.style.boxShadow='0 4px 12px rgba(0,0,0,0.5)';"
+>
+</a>
+
+<!-- Add name -->
+<span style="color: white; font-size: 20px; margin-left: 10px;">Threyviran</span>
+
+<!-- Add new icon after name -->
+<img 
+src="https://img.icons8.com/?size=100&id=pIPl8tqh3igN&format=png&color=000000" 
+alt="Icon after name"
+style="
+  width: 30px;
+  height: 30px;
+  margin-left: 10px;
+  object-fit: contain;
+"
+>
+</div>
+<div style="
+display: flex;
+justify-content: center;
+align-items: center;
+background-color: #121212; /* Dark background */
+padding: 20px;
+border-radius: 12px;
+box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+margin-top: 20px; /* small gap if you add below others */
+">
+<a href="tel:+250791820286" title="Phone" style="text-decoration: none;">
+<img 
+src="https://i.postimg.cc/g2krx5LN/487506104-632445376273608-2035865230541510449-n.jpg" 
+alt="Call us"
+style="
+width: 50px;
+height: 50px;
+transition: transform 0.3s ease, box-shadow 0.3s ease;
+border-radius: 12px;
+background-color: white;
+padding: 8px;
+object-fit: contain;
+"
+onmouseover="this.style.transform='scale(1.2)'; this.style.boxShadow='0 8px 16px rgba(255,255,255,0.3)';"
+onmouseout="this.style.transform='scale(1)'; this.style.boxShadow='0 4px 12px rgba(0,0,0,0.5)';"
+>
+</a>
+
+<!-- Add name -->
+<span style="color: white; font-size: 20px; margin-left: 10px;">agasobanuye.pro</span>
+
+<!-- Add new icon after name -->
+<img 
+src="https://img.icons8.com/?size=100&id=pIPl8tqh3igN&format=png&color=000000" 
+alt="Icon after name"
+style="
+width: 30px;
+height: 30px;
+margin-left: 10px;
+object-fit: contain;
+"
+>
+</div>
+
+
+    </div>
+
+    
+
+    <div class="bottom-footer">
+      <p>Copyright © 2025 Agasobanuye Pro. All Rights Reserved.</p>
+      <p>
+        <a href="#">Privacy Policy</a> | <a href="#">Terms & Conditions</a>
+      </p>
+    </div>
+  </footer>
+ 
+</body>
+</html>
