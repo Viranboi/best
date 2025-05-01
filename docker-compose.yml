@@ -1,0 +1,25 @@
+version: '3.8'
+
+services:
+  mysql:
+    image: mysql:5.7
+    container_name: mysql_db
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: 0852369147@Viran
+      MYSQL_DATABASE: moviesdb
+    ports:
+      - '3306:3306'
+
+  node-app:
+    build: .
+    container_name: movie_app
+    ports:
+      - '8080:8080'
+    environment:
+      DB_HOST: mysql
+      DB_USER: root
+      DB_PASS: 0852369147@Viran
+      DB_NAME: moviesdb
+    depends_on:
+      - mysql
