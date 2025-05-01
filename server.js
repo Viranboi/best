@@ -18,7 +18,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 // MySQL connection
 const db = mysql.createConnection({
-    host: '127.0.0.1',
+    host: 'mysql',
     user: 'root',
     password: '0852369147@Viran',
     database: 'moviesdb'
