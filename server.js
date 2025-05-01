@@ -18,7 +18,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 // MySQL connection setup
 const db = mysql.createConnection({
-    host: process.env.DB_HOST || 'localhost', // Change to 'mysql' if using Docker service name
+    host: process.env.DB_HOST || '127.0.0.1', // Change to 'mysql' if using Docker service name
     user: process.env.DB_USER || 'root',
     password: process.env.DB_PASS || '0852369147@Viran',
     database: process.env.DB_NAME || 'moviesdb',
