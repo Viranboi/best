@@ -662,6 +662,18 @@ margin-top: 20px; /* small gap if you add below others */
           </p>
         </div>
       </footer>
+<script>
+        // Using the apiUrl passed from the backend
+        const apiUrl = "<%= apiUrl %>";
+        console.log("Backend API URL:", apiUrl);
+
+        // Example usage of the API URL to fetch data
+        fetch(`${apiUrl}/api/movies`)
+            .then(response => response.json())
+            .then(data => {
+                console.log("Movies:", data);
+            });
+    </script>
     <script>
         function toggleMenu() {
             const menu = document.getElementById('categoryMenu');
