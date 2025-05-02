@@ -82,7 +82,8 @@ app.get('/', (req, res) => {
                                 categoryData: categoryMovies,
                                 searchQuery,
                                 searchResults,
-                                latestMovie
+                                latestMovie,
+                                apiUrl: process.env.BACKEND_API_URL // Pass the API URL to the frontend
                             });
                         })
                         .catch((err) => {
