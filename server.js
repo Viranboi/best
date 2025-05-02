@@ -23,11 +23,11 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 // MySQL connection setup using environment variables
 const db = mysql.createConnection({
-    host: process.env.DB_HOST, // Use the value from .env file
-    user: process.env.DB_USER, // Use the value from .env file
-    password: process.env.DB_PASS, // Use the value from .env file
-    database: process.env.DB_NAME, // Use the value from .env file
-    port: process.env.DB_PORT // Use the value from .env file
+    host: process.env.DB_HOST || 'localhost',
+    user: process.env.DB_USER || 'root',
+    password: process.env.DB_PASSWORD || '0852369147@Viran',
+    database: process.env.DB_NAME || 'moviesdb',
+    port: process.env.DB_PORT || 3306
 });
 
 // Connect to MySQL
@@ -85,9 +85,15 @@ app.get('/', (req, res) => {
                                 latestMovie
                             });
                         })
-                        .catch(() => res.status(500).send('Error fetching search results'));
+                        .catch((err) => {
+                            console.error(err);
+                            res.status(500).send('Error fetching search results');
+                        });
                 })
-                .catch(() => res.status(500).send('Error fetching movie data'));
+                .catch((err) => {
+                    console.error(err);
+                    res.status(500).send('Error fetching movie data');
+                });
         });
     });
 });
@@ -128,6 +134,11 @@ app.get('/movie/:id', (req, res) => {
 app.post('/movie/:id/comment', (req, res) => {
     const movieId = req.params.id;
     const { username, comment } = req.body;
+
+    if (!username || !comment) {
+        return res.status(400).send('Username and comment are required');
+    }
+
     const sql = 'INSERT INTO comments (movie_id, username, comment) VALUES (?, ?, ?)';
 
     db.query(sql, [movieId, username, comment], (err) => {
@@ -147,6 +158,11 @@ app.get('/admin', (req, res) => {
 // Add a new movie
 app.post('/admin/add', (req, res) => {
     const { name, thumbnail, description, category, link } = req.body;
+
+    if (!name || !thumbnail || !description || !category || !link) {
+        return res.status(400).send('All fields are required');
+    }
+
     const sql = 'INSERT INTO movies (name, thumbnail, description, category, link) VALUES (?, ?, ?, ?, ?)';
 
     db.query(sql, [name, thumbnail, description, category, link], (err) => {
@@ -158,6 +174,7 @@ app.post('/admin/add', (req, res) => {
 // Edit movie form
 app.get('/edit/:id', (req, res) => {
     const movieId = req.params.id;
+
     db.query('SELECT * FROM movies WHERE id = ?', [movieId], (err, results) => {
         if (err) return res.status(500).send('Error fetching movie for edit');
         if (results.length === 0) return res.status(404).send('Movie not found');
@@ -169,6 +186,7 @@ app.get('/edit/:id', (req, res) => {
 app.post('/edit/:id', (req, res) => {
     const movieId = req.params.id;
     const { name, thumbnail, description, category, link } = req.body;
+
     const sql = 'UPDATE movies SET name = ?, thumbnail = ?, description = ?, category = ?, link = ? WHERE id = ?';
 
     db.query(sql, [name, thumbnail, description, category, link, movieId], (err) => {
@@ -180,6 +198,7 @@ app.post('/edit/:id', (req, res) => {
 // Delete movie
 app.get('/delete/:id', (req, res) => {
     const movieId = req.params.id;
+
     db.query('DELETE FROM movies WHERE id = ?', [movieId], (err) => {
         if (err) return res.status(500).send('Error deleting movie');
         res.redirect('/admin');
