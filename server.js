@@ -2,6 +2,11 @@ const express = require('express');
 const mysql = require('mysql2');
 const bodyParser = require('body-parser');
 const path = require('path');
+const dotenv = require('dotenv');
+
+// Load environment variables from .env file
+dotenv.config();
+
 const app = express();
 const port = process.env.PORT || 3000;
 
@@ -16,13 +21,13 @@ app.set('views', path.join(__dirname, 'views'));
 // Serve static files
 app.use(express.static(path.join(__dirname, 'public')));
 
-// MySQL connection setup
+// MySQL connection setup using environment variables
 const db = mysql.createConnection({
-    host: process.env.DB_HOST || '127.0.0.1', // Change to 'mysql' if using Docker service name
-    user: process.env.DB_USER || 'root',
-    password: process.env.DB_PASS || '0852369147@Viran',
-    database: process.env.DB_NAME || 'moviesdb',
-    port: process.env.DB_PORT || 3306
+    host: process.env.DB_HOST, // Use the value from .env file
+    user: process.env.DB_USER, // Use the value from .env file
+    password: process.env.DB_PASS, // Use the value from .env file
+    database: process.env.DB_NAME, // Use the value from .env file
+    port: process.env.DB_PORT // Use the value from .env file
 });
 
 // Connect to MySQL
